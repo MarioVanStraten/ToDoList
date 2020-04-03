@@ -89,6 +89,7 @@ p{
 
 .fa-sync-alt:hover, .fa-trash-alt:hover{
     cursor: pointer;
+    color: limegreen;
 }
 
 .border-radius-left{

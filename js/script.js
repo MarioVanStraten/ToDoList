@@ -40,9 +40,11 @@ const addTasksToTaskList = async () => {
         // Create update button
         const updateTask = document.createElement('i')
         updateTask.classList.add('fas','fa-sync-alt', 'updateTask')
+        updateTask.title = 'Update'
         // Create delete button
         const deleteTask = document.createElement('i')
         deleteTask.classList.add('fas','fa-trash-alt', 'deleteTask')
+        deleteTask.title = 'Delete'
         // Add elements to task-row
         taskRow.append(checkBox, div, updateTask, deleteTask)
         // Add task-row to task list
