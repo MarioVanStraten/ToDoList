@@ -1,4 +1,4 @@
-# W3D5 - PROJECT - ToDo list
+# Week3 - PROJECT - ToDo list
 
 ![ToDo List](Screenshot.png)
 
