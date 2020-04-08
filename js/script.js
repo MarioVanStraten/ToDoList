@@ -7,7 +7,7 @@ const addTasksToTaskList = async () => {
         description: result[key].description,
         done: result[key].done
     }))
-    // DOM: Clear current content in task list
+    // DOM: Clear current content in the task list
     const taskList = document.querySelector('.task-list')
     while(taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
@@ -20,34 +20,30 @@ const addTasksToTaskList = async () => {
         // Add task ID to data attribute
         taskRow.setAttribute('data-id', task.id)
         // Create checkbox
-        const checkBox = document.createElement('input')
-        checkBox.classList.add('checkbox')
-        checkBox.type = 'checkbox'
-        // Set checkbox status depending on DB status
-        if(task.done === true){
-            checkBox.setAttribute('checked','checked')
-        }
+        const checkbox = document.createElement('input')
+        checkbox.classList.add('checkbox')
+        checkbox.type = 'checkbox'
+        // Set checkbox status depending on API status
+        task.done === true ? checkbox.setAttribute('checked','checked') : ''
         // Create editable div with task description
         const taskDescription = task.description
         const div = document.createElement('div')
         div.classList.add('task-description')
         div.setAttribute('contenteditable', true)
         div.append(taskDescription)
-        // Set task description styling depending on DB status
-        if(task.done === true){
-            div.classList.add('line-through')
-        }
+        // Set description styling depending on API status
+        task.done === true ? div.classList.add('line-through') : ''
         // Create update button
-        const updateTask = document.createElement('i')
-        updateTask.classList.add('fas','fa-sync-alt', 'updateTask')
-        updateTask.title = 'Update'
+        const updateButton = document.createElement('i')
+        updateButton.classList.add('fas','fa-sync-alt', 'updateTask')
+        updateButton.title = 'Update'
         // Create delete button
-        const deleteTask = document.createElement('i')
-        deleteTask.classList.add('fas','fa-trash-alt', 'deleteTask')
-        deleteTask.title = 'Delete'
-        // Add elements to task-row
-        taskRow.append(checkBox, div, updateTask, deleteTask)
-        // Add task-row to task list
+        const deleteButton = document.createElement('i')
+        deleteButton.classList.add('fas','fa-trash-alt', 'deleteTask')
+        deleteButton.title = 'Delete'
+        // Add elements to the task-row
+        taskRow.append(checkbox, div, updateButton, deleteButton)
+        // Add task-row to the task list
         const taskList = document.querySelector('.task-list')
         taskList.append(taskRow)
     })
@@ -58,14 +54,15 @@ const addTasksToTaskList = async () => {
 }
 
 const submitNewTask = () => {
+    // Select inputfield and 'add task' button
     const inputField = document.querySelector('.new-task');
     const submitButton = document.querySelector('.btn-add-task');
     // Add eventlistner to 'add task' button
     submitButton.addEventListener('click', () => {
+        // Check if inputfield is not empty
         let newTask = inputField.value
-        // Check is inputfieled is not empty
         if(newTask !== '' && newTask !== null){
-            // Call API function -> submit new task
+            // Call API function -> post new task
             postNewTaskToAPI(newTask)
         }
         // Empty the inputfield
@@ -74,52 +71,51 @@ const submitNewTask = () => {
 }
 
 const deleteTask = () => {
-    const deleteButtons = document.querySelectorAll('.deleteTask');
+    // Select all delete buttons 
+    const deleteButtons = document.querySelectorAll('.deleteTask')
     deleteButtons.forEach(deleteButton => {
         // Add eventlistner to all delete buttons
         deleteButton.addEventListener('click', (event) => {
             const clickedButton = event.target
             // Get task ID from parent data attribute
-            const taskRowID = clickedButton.parentElement.dataset.id
+            const taskID = clickedButton.parentElement.dataset.id
             // Call API function -> delete task
-            deleteTaskFromAPI(taskRowID)
+            deleteTaskFromAPI(taskID)
         })
     }) 
 }
 
 const updateTaskDescription = () => {
+    // Select all update buttons
     const updateButtons = document.querySelectorAll('.updateTask')
     updateButtons.forEach(updateButton => {
         // Add eventlistner to all update buttons
         updateButton.addEventListener('click', (event) => {
             const clickedButton = event.target
             // Get task ID from parent data attribute
-            const taskRowID = clickedButton.parentElement.dataset.id
-            // Select task description text in this row
-            const taskDescriopton = document.querySelector(`div[data-id="${taskRowID}"] > .task-description`).innerText
-            // Call API function -> update description
-            updateTaskDescriptionOnAPI(taskRowID,taskDescriopton)
+            const taskID = clickedButton.parentElement.dataset.id
+            // Select description text in 'this' row
+            const taskDescription = document.querySelector(`div[data-id="${taskID}"] > .task-description`).innerText
+            // Call API function -> put description
+            putTaskDescriptionToAPI(taskID,taskDescription)
         })
     }) 
 }
 
 const toggleTaskStatus = () => {
-    const checkBoxes = document.querySelectorAll('.checkbox')
-    checkBoxes.forEach(checkBox => {
+    // Select all checkboxes
+    const checkboxes = document.querySelectorAll('.checkbox')
+    checkboxes.forEach(checkbox => {
         // Add eventlistner to all checkboxes
-        checkBox.addEventListener('click', (event) => {
-            const clickedCheckBox = event.target
+        checkbox.addEventListener('click', (event) => {
+            const clickedCheckbox = event.target
             // Get task ID from parent data attribute
-            const taskRowID = clickedCheckBox.parentElement.dataset.id
-            const statusCheck = clickedCheckBox.getAttribute('checked')
-            // Check the current status of the checkbox for toggele
-            if(statusCheck==='checked'){
-                setStauts = false
-            } else {
-                setStauts = true
-            }
-            // Call API function -> update status
-            toggleTaskStatusOnAPI(taskRowID,setStauts)
+            const taskID = clickedCheckbox.parentElement.dataset.id
+            // Check the current status of the checkbox for toggling
+            const statusCheckbox = clickedCheckbox.getAttribute('checked')
+            statusCheckbox==='checked' ? setStauts = false : setStauts = true
+            // Call API function -> put status
+            putTaskStatusToAPI(taskID,setStauts)
         })
     }) 
 }

@@ -1,7 +1,7 @@
 const getAllTasksFromAPI = async () => {
     try {
-        const apiURL = `https://wincacademydatabase.firebaseio.com/mario/tasks.json`
-        const result = await fetch(apiURL,{
+        const endpoint = `https://wincacademydatabase.firebaseio.com/mario/tasks.json`
+        const result = await fetch(endpoint,{
             method: 'GET'
         })
         const data = await result.json()
@@ -12,10 +12,10 @@ const getAllTasksFromAPI = async () => {
 }
 
 const postNewTaskToAPI = async (taskDesription) => {
-    try{
-        const apiURL = `https://wincacademydatabase.firebaseio.com/mario/tasks.json`
+    try {
+        const endpoint = `https://wincacademydatabase.firebaseio.com/mario/tasks.json`
         const data = {description: taskDesription, done: false}
-        await fetch(apiURL,{
+        await fetch(endpoint,{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
@@ -28,9 +28,9 @@ const postNewTaskToAPI = async (taskDesription) => {
 }
 
 const deleteTaskFromAPI = async (taskID) => {
-    try{
-        const apiURL = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}.json`
-        await fetch(apiURL,{
+    try {
+        const endpoint = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}.json`
+        await fetch(endpoint,{
             method: 'DELETE',
         })
         // Call DOM function -> refresh task list
@@ -40,10 +40,10 @@ const deleteTaskFromAPI = async (taskID) => {
     }
 }
 
-const updateTaskDescriptionOnAPI = async (taskID,taskDesription) => {
-    try{
-        const apiURL = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}/description.json`
-        await fetch(apiURL,{
+const putTaskDescriptionToAPI = async (taskID,taskDesription) => {
+    try {
+        const endpoint = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}/description.json`
+        await fetch(endpoint,{
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(taskDesription)
@@ -55,10 +55,10 @@ const updateTaskDescriptionOnAPI = async (taskID,taskDesription) => {
     }
 }
 
-const toggleTaskStatusOnAPI = async (taskID,status) => {
-    try{
-        const apiURL = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}/done.json`
-        await fetch(apiURL,{
+const putTaskStatusToAPI = async (taskID,status) => {
+    try {
+        const endpoint = `https://wincacademydatabase.firebaseio.com/mario/tasks/${taskID}/done.json`
+        await fetch(endpoint,{
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: status
